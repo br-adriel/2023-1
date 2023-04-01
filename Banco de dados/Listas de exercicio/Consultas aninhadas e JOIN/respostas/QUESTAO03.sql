@@ -7,4 +7,4 @@ WHERE
     SELECT d.codGerente
     FROM departamento d
     WHERE d.codGerente IS NOT NULL
-  )
+  );
