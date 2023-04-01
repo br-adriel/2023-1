@@ -15,11 +15,11 @@
 | salario     |    |                       |
 | codDepto    | FK | departamento (codigo) |
 
-| departamaneto |    |                  |
-| ------------- | -- | ---------------- |
-| codigo        | PK |                  |
-| descricao     |    |                  |
-| codGerente    | FK | gerente (codigo) |
+| departamaneto |    |                      |
+| ------------- | -- | -------------------- |
+| codigo        | PK |                      |
+| descricao     |    |                      |
+| codGerente    | FK | funcionario (codigo) |
 
 | projeto        |    |                       |
 | -------------- | -- | --------------------- |
@@ -29,7 +29,7 @@
 | dataInicio     |    |                       |
 | dataFim        |    |                       |
 | codDepto       | FK | departamento (codigo) |
-| codResponsavel | FK | responsavel (codigo)  |
+| codResponsavel | FK | funcionario (codigo)  |
 
 | atividade      |    |                      |
 | -------------- | -- | -------------------- |
@@ -38,7 +38,7 @@
 | descricao      |    |                      |
 | dataInicio     |    |                      |
 | dataFim        |    |                      |
-| codResponsavel | FK | responsavel (codigo) |
+| codResponsavel | FK | funcionario (codigo) |
 
 | atividadeProjeto |        |                    |
 | ---------------- | ------ | ------------------ |
