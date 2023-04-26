@@ -21,7 +21,7 @@ CREATE TABLE
 CREATE TABLE
   voo (
     codigo INT AUTO_INCREMENT PRIMARY KEY,
-    tipo VARCHAR(10) NOT NULL,
+    tipo VARCHAR(50) NOT NULL,
     piloto INT NOT NULL,
     num_passageiros INT NOT NULL DEFAULT '0',
     distancia INT NOT NULL,
