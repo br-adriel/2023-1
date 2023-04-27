@@ -1,4 +1,4 @@
-CREATE TRIGGER queda_aviao_clientes BEFORE DELETE ON voo FOR EACH ROW BEGIN
+CREATE TRIGGER queda_aviao_clientes BEFORE DELETE ON voo FOR EACH ROW
 DELETE FROM cliente
 JOIN cliente_voo ON cliente.codigo = cliente_voo.cliente
 WHERE
