@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
                           fontStyle: FontStyle.italic, fontSize: 20)),
                 },
               ),
-              const Text("Terminando...")
+              const Text("Terminando..."),
+              Image.network(
+                  'https://s2.glbimg.com/niKmZWnyym0htQy4OvGJxM1Jpq4=/0x0:445x571/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_ba3db981e6d14e54bb84be31c923b00c/internal_photos/bs/2022/G/g/sfiAXTTUCZD0yYxu7nDg/calca-de-shopping-1.jpg')
             ])),
             bottomNavigationBar: const Row(
               children: [
