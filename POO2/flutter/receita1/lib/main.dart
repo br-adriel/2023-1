@@ -13,28 +13,29 @@ class MyApp extends StatelessWidget {
             textTheme:
                 GoogleFonts.outfitTextTheme(Theme.of(context).textTheme)),
         home: Scaffold(
-          appBar: AppBar(title: const Text("Meu app")),
-          body: Center(
-              child: Column(children: [
-            const Text("Apenas começando..."),
-            StyledText(
-              text: "<i>Olá</i> <b>mundo</b>",
-              tags: {
-                'b': StyledTextTag(
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                'i': StyledTextTag(
-                    style: const TextStyle(
-                        fontStyle: FontStyle.italic, fontSize: 20)),
-              },
-            ),
-            const Text("Terminando...")
-          ])),
-          bottomNavigationBar: const Text("Botão 1"),
-        ));
+            appBar: AppBar(title: const Text("Meu app")),
+            body: Center(
+                child: Column(children: [
+              const Text("Apenas começando..."),
+              StyledText(
+                text: "<i>Olá</i> <b>mundo</b>",
+                tags: {
+                  'b': StyledTextTag(
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  'i': StyledTextTag(
+                      style: const TextStyle(
+                          fontStyle: FontStyle.italic, fontSize: 20)),
+                },
+              ),
+              const Text("Terminando...")
+            ])),
+            bottomNavigationBar: const Row(
+              children: [Text("Voltar"), Text("Iniciar"), Text("Pesquisar")],
+            )));
   }
 }
 
 void main() {
-  MyApp app = MyApp();
+  MyApp app = const MyApp();
   runApp(app);
 }
