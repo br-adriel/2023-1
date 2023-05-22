@@ -31,9 +31,16 @@ class MyApp extends StatelessWidget {
             ])),
             bottomNavigationBar: const Row(
               children: [
-                ElevatedButton(onPressed: null, child: Text("Voltar")),
-                ElevatedButton(onPressed: null, child: Text("Iniciar")),
-                IconButton(onPressed: null, icon: Icon(Icons.search))
+                Expanded(
+                  child: ElevatedButton(onPressed: null, child: Text("Voltar")),
+                ),
+                Expanded(
+                  child:
+                      ElevatedButton(onPressed: null, child: Text("Iniciar")),
+                ),
+                Expanded(
+                  child: IconButton(onPressed: null, icon: Icon(Icons.search)),
+                ),
               ],
             )));
   }
