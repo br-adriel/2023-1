@@ -12,7 +12,8 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text("Cervejas")),
-        body: Center(
+        body: SingleChildScrollView(
+            child: Center(
           child: DataTable(columns: const [
             DataColumn(label: Text("Nome")),
             DataColumn(label: Text("Estilo")),
@@ -33,8 +34,78 @@ class MainApp extends StatelessWidget {
               DataCell(Text('Pilsner')),
               DataCell(Text('82')),
             ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text('Duvel')),
+              DataCell(Text('Pilsner')),
+              DataCell(Text('82')),
+            ]),
           ]),
-        ),
+        )),
       ),
     );
   }
