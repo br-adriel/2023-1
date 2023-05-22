@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               children: [
                 ElevatedButton(onPressed: null, child: Text("Voltar")),
                 ElevatedButton(onPressed: null, child: Text("Iniciar")),
-                ElevatedButton(onPressed: null, child: Text("Pesquisar")),
+                IconButton(onPressed: null, icon: Icon(Icons.search))
               ],
             )));
   }
