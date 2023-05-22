@@ -30,7 +30,11 @@ class MyApp extends StatelessWidget {
               const Text("Terminando...")
             ])),
             bottomNavigationBar: const Row(
-              children: [Text("Voltar"), Text("Iniciar"), Text("Pesquisar")],
+              children: [
+                ElevatedButton(onPressed: null, child: Text("Voltar")),
+                ElevatedButton(onPressed: null, child: Text("Iniciar")),
+                ElevatedButton(onPressed: null, child: Text("Pesquisar")),
+              ],
             )));
   }
 }
