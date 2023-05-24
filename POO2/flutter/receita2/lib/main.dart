@@ -21,22 +21,31 @@ class NewNavBar extends StatelessWidget {
   }
 }
 
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(children: [
+      Expanded(
+        child: Text("La Fin Du Monde - Bock - 65 ibu"),
+      ),
+      Expanded(
+        child: Text("Sapporo Premiume - Sour Ale - 54 ibu"),
+      ),
+      Expanded(
+        child: Text("Duvel - Pilsner - 82 ibu"),
+      )
+    ]);
+  }
+}
+
 void main() {
   MaterialApp app = MaterialApp(
     theme: ThemeData(primarySwatch: Colors.deepPurple),
     home: Scaffold(
         appBar: AppBar(title: const Text("Dicas")),
-        body: const Column(children: [
-          Expanded(
-            child: Text("La Fin Du Monde - Bock - 65 ibu"),
-          ),
-          Expanded(
-            child: Text("Sapporo Premiume - Sour Ale - 54 ibu"),
-          ),
-          Expanded(
-            child: Text("Duvel - Pilsner - 82 ibu"),
-          )
-        ]),
+        body: const HomePage(),
         bottomNavigationBar: const NewNavBar()),
   );
 
