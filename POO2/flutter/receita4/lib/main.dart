@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: DataBodyWidget(objects: dataObjects),
+          body: ListBodyWidget(objects: dataObjects),
           bottomNavigationBar: const NewNavBar(),
         ));
   }
@@ -108,6 +108,35 @@ class DataBodyWidget extends StatelessWidget {
             )
             .toList(),
       ),
+    );
+  }
+}
+
+class ListBodyWidget extends StatelessWidget {
+  final List<Map<String, dynamic>> objects;
+  final columnNames = ["Nome", "Estilo", "IBU"];
+  final propertyNames = ["name", "style", "ibu"];
+
+  ListBodyWidget({super.key, this.objects = const []});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      children: objects.map((obj) {
+        return Card(
+          child: ListTile(
+            trailing: Text(obj['ibu'],
+                style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.deepPurple)),
+            title: Text(obj['name']),
+            subtitle: Text(obj['style']),
+            enabled: true,
+          ),
+        );
+      }).toList(),
     );
   }
 }
