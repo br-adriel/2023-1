@@ -48,7 +48,9 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: ListBodyWidget(objects: dataObjects),
+          body: DataBodyWidget(
+              objects: dataObjects,
+              colunas: const {'name': 'Nome', 'style': 'Estilo', 'ibu': 'IBU'}),
           bottomNavigationBar: const NewNavBar(),
         ));
   }
@@ -77,21 +79,22 @@ class NewNavBar extends StatelessWidget {
 
 class DataBodyWidget extends StatelessWidget {
   final List<Map<String, dynamic>> objects;
-  final columnNames = ["Nome", "Estilo", "IBU"];
-  final propertyNames = ["name", "style", "ibu"];
+  final Map<String, String> colunas;
 
-  DataBodyWidget({super.key, this.objects = const []});
+  const DataBodyWidget(
+      {super.key, required this.objects, required this.colunas});
 
   @override
   Widget build(BuildContext context) {
+    final propertyNames = colunas.keys.toList();
     return SingleChildScrollView(
       child: DataTable(
-        columns: columnNames
+        columns: propertyNames
             .map(
               (name) => DataColumn(
                 label: Expanded(
                   child: Text(
-                    name,
+                    colunas[name] as String,
                     style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
