@@ -23,13 +23,21 @@ class MyApp extends StatelessWidget {
             "Sapporo Premiume - Sour Ale - 54 ibu",
             "Duvel - Pilsner - 82 ibu"
           ]),
-          bottomNavigationBar: const NewNavBar(),
+          bottomNavigationBar: const NewNavBar(
+            icones: [
+              Icon(Icons.coffee_outlined),
+              Icon(Icons.local_drink_outlined),
+              Icon(Icons.flag_outlined),
+            ],
+          ),
         ));
   }
 }
 
 class NewNavBar extends StatelessWidget {
-  const NewNavBar({super.key});
+  final List<Icon> icones;
+
+  const NewNavBar({super.key, required this.icones});
 
   void botaoFoiTocado(int index) {
     print("Tocaram no botão $index");
@@ -37,15 +45,12 @@ class NewNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: botaoFoiTocado, items: const [
-      BottomNavigationBarItem(
-        label: "Cafés",
-        icon: Icon(Icons.coffee_outlined),
-      ),
-      BottomNavigationBarItem(
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-    ]);
+    return BottomNavigationBar(
+      onTap: botaoFoiTocado,
+      items: icones.map((icone) {
+        return BottomNavigationBarItem(label: "Cafés", icon: icone);
+      }).toList(),
+    );
   }
 }
 
