@@ -40,13 +40,25 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class BarraTopo extends StatelessWidget implements PreferredSizeWidget {
+  const BarraTopo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(title: const Text("Dicas"));
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
 void main() {
   MaterialApp app = MaterialApp(
     theme: ThemeData(primarySwatch: Colors.deepPurple),
-    home: Scaffold(
-        appBar: AppBar(title: const Text("Dicas")),
-        body: const HomePage(),
-        bottomNavigationBar: const NewNavBar()),
+    home: const Scaffold(
+        appBar: BarraTopo(),
+        body: HomePage(),
+        bottomNavigationBar: NewNavBar()),
   );
 
   runApp(app);
