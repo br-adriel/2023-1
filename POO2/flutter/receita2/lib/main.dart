@@ -52,14 +52,22 @@ class BarraTopo extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-void main() {
-  MaterialApp app = MaterialApp(
-    theme: ThemeData(primarySwatch: Colors.deepPurple),
-    home: const Scaffold(
-        appBar: BarraTopo(),
-        body: HomePage(),
-        bottomNavigationBar: NewNavBar()),
-  );
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+      home: const Scaffold(
+          appBar: BarraTopo(),
+          body: HomePage(),
+          bottomNavigationBar: NewNavBar()),
+    );
+  }
+}
+
+void main() {
+  MaterialApp app = const MyApp() as MaterialApp;
   runApp(app);
 }
