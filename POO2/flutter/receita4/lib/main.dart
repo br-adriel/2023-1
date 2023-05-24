@@ -3,7 +3,31 @@ import 'package:flutter/material.dart';
 var dataObjects = [
   {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
   {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-  {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
+  {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+  {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+  {"name": "Duvel", "style": "Pilsner", "ibu": "82"},
 ];
 
 void main() {
@@ -60,18 +84,30 @@ class DataBodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
+    return SingleChildScrollView(
+      child: DataTable(
         columns: columnNames
-            .map((name) => DataColumn(
+            .map(
+              (name) => DataColumn(
                 label: Expanded(
-                    child: Text(name,
-                        style: const TextStyle(fontStyle: FontStyle.italic)))))
+                  child: Text(
+                    name,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
+            )
             .toList(),
         rows: objects
-            .map((obj) => DataRow(
+            .map(
+              (obj) => DataRow(
                 cells: propertyNames
                     .map((propName) => DataCell(Text(obj[propName])))
-                    .toList()))
-            .toList());
+                    .toList(),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }
