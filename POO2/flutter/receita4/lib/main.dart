@@ -48,9 +48,9 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: DataBodyWidget(
-              objects: dataObjects,
-              colunas: const {'name': 'Nome', 'style': 'Estilo', 'ibu': 'IBU'}),
+          body: ListBodyWidget(
+            objects: dataObjects,
+          ),
           bottomNavigationBar: const NewNavBar(),
         ));
   }
@@ -117,10 +117,8 @@ class DataBodyWidget extends StatelessWidget {
 
 class ListBodyWidget extends StatelessWidget {
   final List<Map<String, dynamic>> objects;
-  final columnNames = ["Nome", "Estilo", "IBU"];
-  final propertyNames = ["name", "style", "ibu"];
 
-  ListBodyWidget({super.key, this.objects = const []});
+  const ListBodyWidget({super.key, required this.objects});
 
   @override
   Widget build(BuildContext context) {
