@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             title: const Text("Dicas"),
           ),
           body: DataTableWidget(jsonObjects: dataObjects),
-          bottomNavigationBar: const NewNavBar(),
+          bottomNavigationBar: const NewNavBar2(),
         ));
   }
 }
@@ -39,6 +39,45 @@ class NewNavBar extends HookWidget {
         state.value = index;
       },
       currentIndex: state.value,
+      items: const [
+        BottomNavigationBarItem(
+          label: "Cafés",
+          icon: Icon(Icons.coffee_outlined),
+        ),
+        BottomNavigationBarItem(
+          label: "Cervejas",
+          icon: Icon(Icons.local_drink_outlined),
+        ),
+        BottomNavigationBarItem(
+            label: "Nações", icon: Icon(Icons.flag_outlined))
+      ],
+    );
+  }
+}
+
+class NewNavBar2 extends StatefulWidget {
+  const NewNavBar2({super.key});
+
+  @override
+  State<NewNavBar2> createState() => _NewNavBar2State();
+}
+
+class _NewNavBar2State extends State<NewNavBar2> {
+  int _navbarActiveIndex = 0;
+
+  void _setNavbarActiveIndex(int newValue) {
+    setState(() {
+      _navbarActiveIndex = newValue;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      onTap: (index) {
+        _setNavbarActiveIndex(index);
+      },
+      currentIndex: _navbarActiveIndex,
       items: const [
         BottomNavigationBarItem(
           label: "Cafés",
