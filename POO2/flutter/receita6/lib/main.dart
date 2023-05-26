@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
+  List<void Function()> funcoesDeDados = [];
+
+  DataService() {
+    funcoesDeDados = [
+      carregarCafes,
+      carregarCervejas,
+      carregarPaises,
+    ];
+  }
   final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
 
   void carregar(index) {
-    switch (index) {
-      case 0:
-        carregarCafes();
-        break;
-      case 1:
-        carregarCervejas();
-        break;
-      case 2:
-        carregarPaises();
-        break;
-    }
+    funcoesDeDados[index]();
   }
 
   void carregarCervejas() {
