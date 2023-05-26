@@ -5,7 +5,17 @@ class DataService {
   final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
 
   void carregar(index) {
-    if (index == 1) carregarCervejas();
+    switch (index) {
+      case 0:
+        carregarCafes();
+        break;
+      case 1:
+        carregarCervejas();
+        break;
+      case 2:
+        carregarPaises();
+        break;
+    }
   }
 
   void carregarCervejas() {
@@ -13,6 +23,36 @@ class DataService {
       {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
       {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
       {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
+    ];
+  }
+
+  void carregarCafes() {
+    tableStateNotifier.value = [
+      {"name": "Arábica", "style": "Coado", "ibu": "Sabor suave e doce"},
+      {"name": "Robusta", "style": "Espresso", "ibu": "Sabor forte e amargo"},
+      {
+        "name": "Bourbon",
+        "style": "Coado ou espresso",
+        "ibu": "Sabor frutado e doce"
+      },
+      {
+        "name": "Catuaí",
+        "style": "Coado ou espresso",
+        "ibu": "Sabor suave e cítrico"
+      },
+      {
+        "name": "Icatu",
+        "style": "Coado ou espresso",
+        "ibu": "Sabor suave e doce"
+      }
+    ];
+  }
+
+  void carregarPaises() {
+    tableStateNotifier.value = [
+      {"name": "Brasil", "style": "Brasília", "ibu": "211.8 milhões"},
+      {"name": "França", "style": "Paris", "ibu": "67.1 milhões"},
+      {"name": "Japão", "style": "Tóquio", "ibu": "126.3 milhões"}
     ];
   }
 }
