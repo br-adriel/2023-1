@@ -23,6 +23,7 @@ class DataService {
       carregarCafes,
       carregarCervejas,
       carregarPaises,
+      carregarUsuarios,
     ];
     tableStateNotifier.value = {
       'status': TableStatus.loading,
@@ -45,6 +46,23 @@ class DataService {
         "data": beersJson,
         "propertyNames": ["name", "style", "ibu"],
         "columnNames": ["Nome", "Estilo", "IBU"],
+        "status": TableStatus.ready
+      };
+    });
+  }
+
+  void carregarUsuarios() {
+    var usersUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/v2/users',
+        queryParameters: {'size': '${quantidadeItensNotifier.value}'});
+    http.read(usersUri).then((jsonString) {
+      var usersJson = jsonDecode(jsonString);
+      tableStateNotifier.value = {
+        "data": usersJson,
+        "propertyNames": ["first_name", "last_name", "username", "email"],
+        "columnNames": ["Nome", "Sobrenome", "Usuário", "Email"],
         "status": TableStatus.ready
       };
     });
@@ -129,10 +147,14 @@ class MyApp extends StatelessWidget {
 
                   case TableStatus.ready:
                     return SingleChildScrollView(
-                      child: DataTableWidget(
-                        jsonObjects: value['data'],
-                        propertyNames: value['propertyNames'],
-                        columnNames: value['columnNames'],
+                      scrollDirection: Axis.vertical,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTableWidget(
+                          jsonObjects: value['data'],
+                          propertyNames: value['propertyNames'],
+                          columnNames: value['columnNames'],
+                        ),
                       ),
                     );
                   case TableStatus.error:
@@ -164,15 +186,24 @@ class NewNavBar extends HookWidget {
           itemSelectedCallback(index);
         },
         currentIndex: state.value,
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             label: "Cafés",
             icon: Icon(Icons.coffee_outlined),
           ),
           BottomNavigationBarItem(
-              label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+            label: "Cervejas",
+            icon: Icon(Icons.local_drink_outlined),
+          ),
           BottomNavigationBarItem(
-              label: "Nações", icon: Icon(Icons.flag_outlined))
+            label: "Nações",
+            icon: Icon(Icons.flag_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: "Usuários",
+            icon: Icon(Icons.people_alt_outlined),
+          )
         ]);
   }
 }
@@ -193,18 +224,19 @@ class DataTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable(
-        columns: columnNames
-            .map((name) => DataColumn(
-                label: Expanded(
-                    child: Text(name,
-                        style: const TextStyle(fontStyle: FontStyle.italic)))))
-            .toList(),
-        rows: jsonObjects
-            .map((obj) => DataRow(
-                cells: propertyNames
-                    .map((propName) => DataCell(Text(obj[propName])))
-                    .toList()))
-            .toList());
+      columns: columnNames
+          .map((name) => DataColumn(
+              label: Expanded(
+                  child: Text(name,
+                      style: const TextStyle(fontStyle: FontStyle.italic)))))
+          .toList(),
+      rows: jsonObjects
+          .map((obj) => DataRow(
+              cells: propertyNames
+                  .map((propName) => DataCell(Text(obj[propName])))
+                  .toList()))
+          .toList(),
+    );
   }
 }
 
@@ -216,27 +248,28 @@ class MenuQuantidade extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<int>(
-        initialValue: quantidade,
-        tooltip: "Quantidade de itens",
-        onSelected: (value) =>
-            {dataService.quantidadeItensNotifier.value = value},
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
-              const PopupMenuItem<int>(
-                value: 5,
-                child: Text("5 itens"),
-              ),
-              const PopupMenuItem<int>(
-                value: 10,
-                child: Text("10 itens"),
-              ),
-              const PopupMenuItem<int>(
-                value: 15,
-                child: Text("15 itens"),
-              ),
-              const PopupMenuItem<int>(
-                value: 20,
-                child: Text("20 itens"),
-              ),
-            ]);
+      initialValue: quantidade,
+      tooltip: "Quantidade de itens",
+      onSelected: (value) =>
+          {dataService.quantidadeItensNotifier.value = value},
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+        const PopupMenuItem<int>(
+          value: 5,
+          child: Text("5 itens"),
+        ),
+        const PopupMenuItem<int>(
+          value: 10,
+          child: Text("10 itens"),
+        ),
+        const PopupMenuItem<int>(
+          value: 15,
+          child: Text("15 itens"),
+        ),
+        const PopupMenuItem<int>(
+          value: 20,
+          child: Text("20 itens"),
+        ),
+      ],
+    );
   }
 }
