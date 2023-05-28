@@ -18,6 +18,7 @@ class DataService {
     "propertyNames": [''],
     "columnNames": ['']
   });
+  final ValueNotifier<int> quantidadeItensNotifier = ValueNotifier(5);
 
   void carregar(index) {
     funcoesDeDados[index]();
@@ -28,7 +29,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
-        queryParameters: {'size': '5'});
+        queryParameters: {'size': '${quantidadeItensNotifier.value}'});
     var jsonString = await http.read(beersUri);
     var beersJson = jsonDecode(jsonString);
     tableStateNotifier.value = {
@@ -43,7 +44,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
-        queryParameters: {'size': '5'});
+        queryParameters: {'size': '${quantidadeItensNotifier.value}'});
     var jsonString = await http.read(coffeeUri);
     var coffeeJson = jsonDecode(jsonString);
     tableStateNotifier.value = {
@@ -58,7 +59,7 @@ class DataService {
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/nation/random_nation',
-        queryParameters: {'size': '5'});
+        queryParameters: {'size': '${quantidadeItensNotifier.value}'});
     var jsonString = await http.read(coffeeUri);
     var coffeeJson = jsonDecode(jsonString);
     tableStateNotifier.value = {
@@ -86,15 +87,26 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("Dicas"),
+            title: const Text("Receita 7"),
+            actions: [
+              ValueListenableBuilder(
+                valueListenable: dataService.quantidadeItensNotifier,
+                builder: (_, value, __) {
+                  return MenuQuantidade(
+                    quantidade: value,
+                  );
+                },
+              )
+            ],
           ),
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
-                return DataTableWidget(
-                    jsonObjects: value['data'],
-                    propertyNames: value['propertyNames'],
-                    columnNames: value['columnNames']);
+                return SingleChildScrollView(
+                    child: DataTableWidget(
+                        jsonObjects: value['data'],
+                        propertyNames: value['propertyNames'],
+                        columnNames: value['columnNames']));
               }),
           bottomNavigationBar: NewNavBar(
             itemSelectedCallback: dataService.carregar,
@@ -161,5 +173,38 @@ class DataTableWidget extends StatelessWidget {
                     .map((propName) => DataCell(Text(obj[propName])))
                     .toList()))
             .toList());
+  }
+}
+
+class MenuQuantidade extends StatelessWidget {
+  final int quantidade;
+
+  const MenuQuantidade({super.key, required this.quantidade});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<int>(
+        initialValue: quantidade,
+        tooltip: "Quantidade de itens",
+        onSelected: (value) =>
+            {dataService.quantidadeItensNotifier.value = value},
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+              const PopupMenuItem<int>(
+                value: 5,
+                child: Text("5 itens"),
+              ),
+              const PopupMenuItem<int>(
+                value: 10,
+                child: Text("10 itens"),
+              ),
+              const PopupMenuItem<int>(
+                value: 15,
+                child: Text("15 itens"),
+              ),
+              const PopupMenuItem<int>(
+                value: 20,
+                child: Text("20 itens"),
+              ),
+            ]);
   }
 }
