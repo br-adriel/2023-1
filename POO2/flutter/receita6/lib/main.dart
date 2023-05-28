@@ -11,48 +11,72 @@ class DataService {
       carregarPaises,
     ];
   }
-  final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
+  final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
+    "data": [],
+    "propertyNames": [''],
+    "columnNames": ['']
+  });
 
   void carregar(index) {
     funcoesDeDados[index]();
   }
 
   void carregarCervejas() {
-    tableStateNotifier.value = [
-      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
-      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
-      {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
-    ];
+    tableStateNotifier.value = {
+      "data": [
+        {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+        {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+        {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
+      ],
+      "propertyNames": ["name", "style", "ibu"],
+      "columnNames": ["Nome", "Estilo", "IBU"],
+    };
   }
 
   void carregarCafes() {
-    tableStateNotifier.value = [
-      {"name": "Arábica", "style": "Coado", "ibu": "Sabor suave e doce"},
-      {"name": "Robusta", "style": "Espresso", "ibu": "Sabor forte e amargo"},
-      {
-        "name": "Bourbon",
-        "style": "Coado ou espresso",
-        "ibu": "Sabor frutado e doce"
-      },
-      {
-        "name": "Catuaí",
-        "style": "Coado ou espresso",
-        "ibu": "Sabor suave e cítrico"
-      },
-      {
-        "name": "Icatu",
-        "style": "Coado ou espresso",
-        "ibu": "Sabor suave e doce"
-      }
-    ];
+    tableStateNotifier.value = {
+      "data": [
+        {
+          "tipo": "Arábica",
+          "preparo": "Coado",
+          "caracteristicas": "Sabor suave e doce"
+        },
+        {
+          "tipo": "Robusta",
+          "preparo": "Espresso",
+          "caracteristicas": "Sabor forte e amargo"
+        },
+        {
+          "tipo": "Bourbon",
+          "preparo": "Coado ou espresso",
+          "caracteristicas": "Sabor frutado e doce"
+        },
+        {
+          "tipo": "Catuaí",
+          "preparo": "Coado ou espresso",
+          "caracteristicas": "Sabor suave e cítrico"
+        },
+        {
+          "tipo": "Icatu",
+          "preparo": "Coado ou espresso",
+          "caracteristicas": "Sabor suave e doce"
+        }
+      ],
+      "propertyNames": ["tipo", "preparo", "caracteristicas"],
+      "columnNames": ["Tipo", "Preparo", "Características"],
+    };
   }
 
   void carregarPaises() {
-    tableStateNotifier.value = [
-      {"name": "Brasil", "style": "Brasília", "ibu": "211.8 milhões"},
-      {"name": "França", "style": "Paris", "ibu": "67.1 milhões"},
-      {"name": "Japão", "style": "Tóquio", "ibu": "126.3 milhões"}
-    ];
+    tableStateNotifier.value = {
+      "data": [
+        {"nome": "Brasil", "capital": "Brasília", "populacao": "211.8 milhões"},
+        {"nome": "França", "capital": "Paris", "populacao": "67.1 milhões"},
+        {"nome": "Japão", "capital": "Tóquio", "populacao": "126.3 milhões"}
+      ],
+      "propertyNames": ["nome", "capital", "populacao"],
+      "columnNames": ["Nome", "Capital", "População"],
+    };
   }
 }
 
@@ -79,9 +103,9 @@ class MyApp extends StatelessWidget {
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
                 return DataTableWidget(
-                    jsonObjects: value,
-                    propertyNames: const ["name", "style", "ibu"],
-                    columnNames: const ["Nome", "Estilo", "IBU"]);
+                    jsonObjects: value['data'],
+                    propertyNames: value['propertyNames'],
+                    columnNames: value['columnNames']);
               }),
           bottomNavigationBar: NewNavBar(
             itemSelectedCallback: dataService.carregar,
@@ -130,8 +154,8 @@ class DataTableWidget extends StatelessWidget {
   const DataTableWidget(
       {super.key,
       this.jsonObjects = const [],
-      this.columnNames = const ["Nome", "Estilo", "IBU"],
-      this.propertyNames = const ["name", "style", "ibu"]});
+      this.columnNames = const [],
+      this.propertyNames = const []});
 
   @override
   Widget build(BuildContext context) {
