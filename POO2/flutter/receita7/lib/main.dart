@@ -4,10 +4,23 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DataService {
-  final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
+  List<void Function()> funcoesDeDados = [];
+
+  DataService() {
+    funcoesDeDados = [
+      carregarCafes,
+      carregarCervejas,
+      carregarPaises,
+    ];
+  }
+  final ValueNotifier<Map<String, dynamic>> tableStateNotifier = ValueNotifier({
+    "data": [],
+    "propertyNames": [''],
+    "columnNames": ['']
+  });
 
   void carregar(index) {
-    if (index == 1) carregarCervejas();
+    funcoesDeDados[index]();
   }
 
   Future<void> carregarCervejas() async {
@@ -18,12 +31,45 @@ class DataService {
         queryParameters: {'size': '5'});
     var jsonString = await http.read(beersUri);
     var beersJson = jsonDecode(jsonString);
-    tableStateNotifier.value = beersJson;
+    tableStateNotifier.value = {
+      "data": beersJson,
+      "propertyNames": ["name", "style", "ibu"],
+      "columnNames": ["Nome", "Estilo", "IBU"]
+    };
+  }
+
+  Future<void> carregarCafes() async {
+    var coffeeUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/coffee/random_coffee',
+        queryParameters: {'size': '5'});
+    var jsonString = await http.read(coffeeUri);
+    var coffeeJson = jsonDecode(jsonString);
+    tableStateNotifier.value = {
+      "data": coffeeJson,
+      "propertyNames": ["blend_name", "variety", "origin"],
+      "columnNames": ["Nome", "Variedade", "Origem"]
+    };
+  }
+
+  Future<void> carregarPaises() async {
+    var coffeeUri = Uri(
+        scheme: 'https',
+        host: 'random-data-api.com',
+        path: 'api/nation/random_nation',
+        queryParameters: {'size': '5'});
+    var jsonString = await http.read(coffeeUri);
+    var coffeeJson = jsonDecode(jsonString);
+    tableStateNotifier.value = {
+      "data": coffeeJson,
+      "propertyNames": ["nationality", "language", "capital"],
+      "columnNames": ["Nacionalidade", "Idioma", "Capital"]
+    };
   }
 }
 
 final dataService = DataService();
-
 void main() {
   MyApp app = const MyApp();
 
@@ -46,21 +92,23 @@ class MyApp extends StatelessWidget {
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
                 return DataTableWidget(
-                    jsonObjects: value,
-                    propertyNames: const ["name", "style", "ibu"],
-                    columnNames: const ["Nome", "Estilo", "IBU"]);
+                    jsonObjects: value['data'],
+                    propertyNames: value['propertyNames'],
+                    columnNames: value['columnNames']);
               }),
-          bottomNavigationBar:
-              NewNavBar(itemSelectedCallback: dataService.carregar),
+          bottomNavigationBar: NewNavBar(
+            itemSelectedCallback: dataService.carregar,
+          ),
         ));
   }
 }
 
 class NewNavBar extends HookWidget {
-  final _itemSelectedCallback;
+  dynamic itemSelectedCallback;
 
-  NewNavBar({super.key, itemSelectedCallback})
-      : _itemSelectedCallback = itemSelectedCallback ?? (int) {}
+  NewNavBar({super.key, this.itemSelectedCallback}) {
+    itemSelectedCallback ??= (_) {};
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +117,7 @@ class NewNavBar extends HookWidget {
     return BottomNavigationBar(
         onTap: (index) {
           state.value = index;
-
-          _itemSelectedCallback(index);
+          itemSelectedCallback(index);
         },
         currentIndex: state.value,
         items: const [
@@ -96,28 +143,23 @@ class DataTableWidget extends StatelessWidget {
   const DataTableWidget(
       {super.key,
       this.jsonObjects = const [],
-      this.columnNames = const ["Nome", "Estilo", "IBU"],
-      this.propertyNames = const ["name", "style", "ibu"]});
+      this.columnNames = const [],
+      this.propertyNames = const []});
 
   @override
   Widget build(BuildContext context) {
     return DataTable(
         columns: columnNames
             .map((name) => DataColumn(
-                  label: Expanded(
+                label: Expanded(
                     child: Text(name,
-                        style: const TextStyle(fontStyle: FontStyle.italic)),
-                  ),
-                ))
+                        style: const TextStyle(fontStyle: FontStyle.italic)))))
             .toList(),
         rows: jsonObjects
-            .map(
-              (obj) => DataRow(
+            .map((obj) => DataRow(
                 cells: propertyNames
                     .map((propName) => DataCell(Text(obj[propName])))
-                    .toList(),
-              ),
-            )
+                    .toList()))
             .toList());
   }
 }
