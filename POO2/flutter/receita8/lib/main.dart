@@ -14,9 +14,27 @@ class DataService {
     "data": [],
     "propertyNames": [''],
     "columnNames": [''],
-    "status": TableStatus.idle
+    "status": TableStatus.idle,
+    "sortColumnIndex": null,
+    "sortAscending": true,
   });
   final ValueNotifier<int> quantidadeItensNotifier = ValueNotifier(5);
+
+  void ordenar(int columnIndex, bool ascending) {
+    String propriedade = tableStateNotifier.value['propertyNames'][columnIndex];
+    tableStateNotifier.value['data'].sort((a, b) {
+      dynamic valorA = a[propriedade];
+      dynamic valorB = b[propriedade];
+      if (valorA is Comparable && valorB is Comparable) {
+        return ascending ? valorA.compareTo(valorB) : valorB.compareTo(valorA);
+      } else {
+        return 0;
+      }
+    });
+    tableStateNotifier.value["sortColumnIndex"] = columnIndex;
+    tableStateNotifier.value["sortAscending"] = ascending;
+    tableStateNotifier.value = Map.from(tableStateNotifier.value);
+  }
 
   void carregar(index) {
     funcoesDeDados = [
@@ -29,7 +47,9 @@ class DataService {
       'status': TableStatus.loading,
       "propertyNames": [''],
       "columnNames": [''],
-      'data': []
+      "data": [],
+      "sortColumnIndex": null,
+      "sortAscending": true,
     };
     funcoesDeDados[index]();
   }
@@ -46,7 +66,9 @@ class DataService {
         "data": beersJson,
         "propertyNames": ["name", "style", "ibu"],
         "columnNames": ["Nome", "Estilo", "IBU"],
-        "status": TableStatus.ready
+        "status": TableStatus.ready,
+        "sortColumnIndex": null,
+        "sortAscending": true,
       };
     });
   }
@@ -63,7 +85,9 @@ class DataService {
         "data": usersJson,
         "propertyNames": ["first_name", "last_name", "username", "email"],
         "columnNames": ["Nome", "Sobrenome", "Usuário", "Email"],
-        "status": TableStatus.ready
+        "status": TableStatus.ready,
+        "sortColumnIndex": null,
+        "sortAscending": true,
       };
     });
   }
@@ -80,7 +104,9 @@ class DataService {
         "data": coffeeJson,
         "propertyNames": ["blend_name", "variety", "origin"],
         "columnNames": ["Nome", "Variedade", "Origem"],
-        "status": TableStatus.ready
+        "status": TableStatus.ready,
+        "sortColumnIndex": null,
+        "sortAscending": true,
       };
     });
   }
@@ -97,7 +123,9 @@ class DataService {
         "data": nationsJson,
         "propertyNames": ["nationality", "language", "capital"],
         "columnNames": ["Nacionalidade", "Idioma", "Capital"],
-        "status": TableStatus.ready
+        "status": TableStatus.ready,
+        "sortColumnIndex": null,
+        "sortAscending": true,
       };
     }).catchError((err) {
       tableStateNotifier.value["status"] = TableStatus.error;
@@ -154,6 +182,8 @@ class MyApp extends StatelessWidget {
                           jsonObjects: value['data'],
                           propertyNames: value['propertyNames'],
                           columnNames: value['columnNames'],
+                          sortAscending: value['sortAscending'],
+                          sortColumnIndex: value['sortColumnIndex'],
                         ),
                       ),
                     );
@@ -210,25 +240,36 @@ class NewNavBar extends HookWidget {
 
 class DataTableWidget extends StatelessWidget {
   final List jsonObjects;
-
   final List<String> columnNames;
-
   final List<String> propertyNames;
+  final int? sortColumnIndex;
+  final bool sortAscending;
 
-  const DataTableWidget(
-      {super.key,
-      this.jsonObjects = const [],
-      this.columnNames = const [],
-      this.propertyNames = const []});
+  const DataTableWidget({
+    super.key,
+    this.jsonObjects = const [],
+    this.columnNames = const [],
+    this.propertyNames = const [],
+    this.sortAscending = true,
+    this.sortColumnIndex,
+  });
 
   @override
   Widget build(BuildContext context) {
     return DataTable(
       columns: columnNames
-          .map((name) => DataColumn(
-              label: Expanded(
-                  child: Text(name,
-                      style: const TextStyle(fontStyle: FontStyle.italic)))))
+          .map(
+            (name) => DataColumn(
+                label: Expanded(
+                  child: Text(
+                    name,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+                onSort: ((columnIndex, ascending) {
+                  dataService.ordenar(columnIndex, ascending);
+                })),
+          )
           .toList(),
       rows: jsonObjects
           .map((obj) => DataRow(
@@ -236,6 +277,8 @@ class DataTableWidget extends StatelessWidget {
                   .map((propName) => DataCell(Text(obj[propName])))
                   .toList()))
           .toList(),
+      sortColumnIndex: sortColumnIndex,
+      sortAscending: sortAscending,
     );
   }
 }
