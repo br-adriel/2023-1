@@ -25,108 +25,82 @@ class DataService {
     funcoes[index](firstLoad: true);
   }
 
-  void carregarCafes({bool firstLoad = false}) {
-    //ignorar solicitação se uma requisição já estiver em curso
+  void _carregarItens(
+      {required Uri uri,
+      required bool firstLoad,
+      required List<String> propertyNames,
+      required List<String> columnNames,
+      required ItemType itemType}) {
     if (tableStateNotifier.value['status'] == TableStatus.loading &&
         !firstLoad) {
       return;
     }
 
+    http.read(uri).then((jsonString) {
+      var itensJson = jsonDecode(jsonString);
+
+      //se já houver itens no estado da tabela...
+      if (tableStateNotifier.value['status'] != TableStatus.loading) {
+        itensJson = [...tableStateNotifier.value['dataObjects'], ...itensJson];
+      }
+
+      tableStateNotifier.value = {
+        'status': TableStatus.ready,
+        'dataObjects': itensJson,
+        'propertyNames': propertyNames,
+        'columnNames': columnNames,
+        'itemType': itemType,
+      };
+    });
+  }
+
+  void carregarCafes({bool firstLoad = false}) {
     var coffeesUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/coffee/random_coffee',
         queryParameters: {'size': '10'});
 
-    http.read(coffeesUri).then((jsonString) {
-      var coffeesJson = jsonDecode(jsonString);
-
-      //se já houver cafés no estado da tabela...
-      if (tableStateNotifier.value['status'] != TableStatus.loading) {
-        coffeesJson = [
-          ...tableStateNotifier.value['dataObjects'],
-          ...coffeesJson
-        ];
-      }
-
-      tableStateNotifier.value = {
-        'status': TableStatus.ready,
-        'dataObjects': coffeesJson,
-        'propertyNames': ["blend_name", "origin", "variety"],
-        'columnNames': ["Nome", "Origem", "Tipo"],
-        'itemType': ItemType.coffee,
-      };
-    });
+    _carregarItens(
+      uri: coffeesUri,
+      firstLoad: firstLoad,
+      propertyNames: ["blend_name", "origin", "variety"],
+      columnNames: ["Nome", "Origem", "Tipo"],
+      itemType: ItemType.coffee,
+    );
   }
 
   void carregarNacoes({bool firstLoad = false}) {
-    //ignorar solicitação se uma requisição já estiver em curso
-    if (tableStateNotifier.value['status'] == TableStatus.loading &&
-        !firstLoad) {
-      return;
-    }
-
     var nationsUri = Uri(
-        scheme: 'https',
-        host: 'random-data-api.com',
-        path: 'api/nation/random_nation',
-        queryParameters: {'size': '10'});
+      scheme: 'https',
+      host: 'random-data-api.com',
+      path: 'api/nation/random_nation',
+      queryParameters: {'size': '10'},
+    );
 
-    http.read(nationsUri).then((jsonString) {
-      var nationsJson = jsonDecode(jsonString);
-
-      //se já houver nações no estado da tabela...
-      if (tableStateNotifier.value['status'] != TableStatus.loading) {
-        nationsJson = [
-          ...tableStateNotifier.value['dataObjects'],
-          ...nationsJson
-        ];
-      }
-
-      tableStateNotifier.value = {
-        'status': TableStatus.ready,
-        'dataObjects': nationsJson,
-        'propertyNames': [
-          "nationality",
-          "capital",
-          "language",
-          "national_sport"
-        ],
-        'columnNames': ["Nome", "Capital", "Idioma", "Esporte"],
-        'itemType': ItemType.nation,
-      };
-    });
+    _carregarItens(
+      uri: nationsUri,
+      firstLoad: firstLoad,
+      propertyNames: ["nationality", "capital", "language", "national_sport"],
+      columnNames: ["Nome", "Capital", "Idioma", "Esporte"],
+      itemType: ItemType.nation,
+    );
   }
 
   void carregarCervejas({bool firstLoad = false}) {
-    //ignorar solicitação se uma requisição já estiver em curso
-    if (tableStateNotifier.value['status'] == TableStatus.loading &&
-        !firstLoad) {
-      return;
-    }
-
     var beersUri = Uri(
         scheme: 'https',
         host: 'random-data-api.com',
         path: 'api/beer/random_beer',
         queryParameters: {'size': '10'});
 
-    http.read(beersUri).then((jsonString) {
-      var beersJson = jsonDecode(jsonString);
-
-      //se já houver cervejas no estado da tabela...
-      if (tableStateNotifier.value['status'] != TableStatus.loading) {
-        beersJson = [...tableStateNotifier.value['dataObjects'], ...beersJson];
-      }
-
-      tableStateNotifier.value = {
-        'status': TableStatus.ready,
-        'dataObjects': beersJson,
-        'propertyNames': ["name", "style", "ibu"],
-        'columnNames': ["Nome", "Estilo", "IBU"],
-        'itemType': ItemType.beer,
-      };
-    });
+    _carregarItens(
+      uri: beersUri,
+      firstLoad: firstLoad,
+      propertyNames: ["name", "style", "ibu"],
+      columnNames: ["Nome", "Estilo", "IBU"],
+      itemType: ItemType.beer,
+    );
   }
 }
 
