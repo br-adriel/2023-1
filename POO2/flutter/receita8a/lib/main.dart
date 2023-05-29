@@ -128,8 +128,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("Dicas"),
-          ),
+              title: ValueListenableBuilder(
+                  valueListenable: dataService.tableStateNotifier,
+                  builder: (_, value, __) {
+                    return Text("${value['dataObjects'].length} itens");
+                  })),
           body: ValueListenableBuilder(
               valueListenable: dataService.tableStateNotifier,
               builder: (_, value, __) {
