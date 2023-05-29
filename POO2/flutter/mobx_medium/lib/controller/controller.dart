@@ -1,15 +1,14 @@
 import "package:mobx/mobx.dart";
+part "controller.g.dart";
 
-class Controller {
-  Observable<int> numeroDeClicks = Observable(0);
+class Controller = ControllerBase with _$Controller;
 
-  _addClick() {
-    numeroDeClicks.value++;
-  }
+abstract class ControllerBase with Store {
+  @observable
+  int numeroDeClicks = 0;
 
-  late Action addClick;
-
-  Controller() {
-    addClick = Action(_addClick);
+  @action
+  addClick() {
+    numeroDeClicks++;
   }
 }

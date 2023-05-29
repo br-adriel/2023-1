@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Observer(builder: (_) {
               return Text(
-                '${controller.numeroDeClicks.value}',
+                '${controller.numeroDeClicks}',
                 style: Theme.of(context).textTheme.headlineMedium,
               );
             }),
